@@ -38,36 +38,46 @@ def tot_amount_state_pandas(fec_df: pd.DataFrame, state: str) -> float:
 
 def tot_amount_job_pandas(fec_df: pd.DataFrame, candidate: str, company: str, job: str) -> float:
     fec_df = fec_df.dropna(subset=["contb_receipt_amt", "contbr_employer", "contbr_occupation"])
-    return fec_df[fec_df["cand_nm"] == candidate][fec_df["contbr_employer"].str.contains(company)][fec_df["contbr_occupation"].str.contains(job)]["contb_receipt_amt"].sum()
+    return fec_df[fec_df["cand_nm"] == candidate][fec_df["contbr_employer"].str.contains(company)][
+        fec_df["contbr_occupation"].str.contains(job)
+    ]["contb_receipt_amt"].sum()
 
 
 def tot_contributions_for_cand_pandas(fec_df: pd.DataFrame, candidate: str) -> pd.Series:
-    print(fec_df.columns)
     return fec_df[fec_df["cand_nm"] == candidate].groupby("contbr_st")["contbr_nm"].count()
 
 
 def top_10_state_pandas(fec_df: pd.DataFrame, candidate: str) -> pd.Series:
-    return fec_df[fec_df["cand_nm"] == candidate].groupby("contbr_st")["contb_receipt_amt"].count().sort_values(ascending=False).head(n=10)
+    return (
+        fec_df[fec_df["cand_nm"] == candidate]
+        .groupby("contbr_st")["contb_receipt_amt"]
+        .count()
+        .sort_values(ascending=False)
+        .head(n=10)
+    )
 
 
 def discretization_pandas(fec_df: pd.DataFrame) -> pd.DataFrame:
     from copy import deepcopy
 
     fec_df = deepcopy(fec_df)
-    fec_df["bins"] = pd.cut(fec_df["contb_receipt_amt"], bins=[0,1, 10, 100, 1000, 10000, 100000, 1000000, 10000000])
-    ans = fec_df.groupby(["cand_nm","bins"])["contb_receipt_amt"].sum()
+    fec_df["bins"] = pd.cut(
+        fec_df["contb_receipt_amt"], bins=[0, 1, 10, 100, 1000, 10000, 100000, 1000000, 10000000]
+    )
+    ans = fec_df.groupby(["cand_nm", "bins"])["contb_receipt_amt"].sum()
     return ans.unstack(0)
+
 
 def load_fec_data_to_duckdb(
     filename: str = "resources/fec_2012_contribution_subset.csv",
 ) -> duckdb.DuckDBPyConnection:
-    con = duckdb.connect(':memory:')
-    
+    con = duckdb.connect(":memory:")
+
     con.execute(f"""
         CREATE OR REPLACE TABLE fec_table AS
         SELECT * FROM read_csv_auto('{filename}')
     """)
-    
+
     return con
 
 
@@ -77,7 +87,8 @@ def query_fec_data(con: duckdb.DuckDBPyConnection, query: str) -> list[Any]:
 
 t32b1_query = """
 select sum(CAST(contb_receipt_amt AS DOUBLE)), cand_nm from fec_table
-where (cand_nm = 'Obama, Barack' or cand_nm = 'Romney, Mitt') and CAST(contb_receipt_amt AS DOUBLE) >= 0
+where (cand_nm = 'Obama, Barack' or cand_nm = 'Romney, Mitt') and
+CAST(contb_receipt_amt AS DOUBLE) >= 0
 group by cand_nm
 order by cand_nm
 """
@@ -92,7 +103,8 @@ limit 10
 
 
 t32c1_query = """
-select count(cmte_id), contbr_st from (select * from read_csv_auto('src/ds5612_pa1/resources/fec_2012_contribution_subset.csv'))
+select count(cmte_id), contbr_st from
+(select * from read_csv_auto('src/ds5612_pa1/resources/fec_2012_contribution_subset.csv'))
 where (cand_nm = 'Obama, Barack') and contb_receipt_amt > 0
 group by contbr_st
 order by count(cmte_id) desc

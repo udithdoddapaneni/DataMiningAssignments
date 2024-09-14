@@ -18,60 +18,39 @@ from typing import Any
 
 def t2c_python_dict_to_toml_string(python_dict: dict[str, Any], parent_key: str = "") -> str:
     toml = ""
-    if parent_key == "":
-        key = "\n"
-    else:
-        key = f"[{parent_key}]\n"
+    key = "\n" if parent_key == "" else f"[{parent_key}]\n"
     toml += key
-    keys = []
-    for i in python_dict:
-        if type(python_dict[i]) != dict:
-            keys.append(i)
-
-    for i in python_dict:
-        if type(python_dict[i]) == dict:
-            keys.append(i)
-
+    keys = list(python_dict)
     for i in keys:
-        if type(python_dict[i]) == dict:
-            if parent_key == "":
-                pkey = i
-            else:
-                pkey = parent_key + "." + i
+        if isinstance(python_dict[i], dict):
+            pkey = i if parent_key == "" else parent_key + "." + i
             toml += t2c_python_dict_to_toml_string(python_dict[i], pkey)
         else:
-            if parent_key == "":
-                key = "\n"
-            else:
-                key = f"[{parent_key}]\n"
-            
-            if type(python_dict[i]) == str:
-                value = f'"{python_dict[i]}"'
-            else:
-                value = python_dict[i]
+            key = "\n" if parent_key == "" else f"[{parent_key}]\n"
+            value = f'"{python_dict[i]}"' if isinstance(python_dict[i], str) else python_dict[i]
             toml += f"{i} = {value}\n"
     return toml
 
+
 def t2d_python_dict_to_yaml_string(python_dict: dict[str, Any], indent: int = 0) -> str:
     yaml = ""
-    ident = "  "*(indent)
+    ident = "  " * (indent)
     space = " "
     for e in python_dict:
-        if type(python_dict[e]) == dict:
-            yaml += ident + e + ":" + "\n" + t2d_python_dict_to_yaml_string(python_dict[e], indent+1)
+        if isinstance(python_dict[e], dict):
+            yaml += (
+                ident + e + ":" + "\n" + t2d_python_dict_to_yaml_string(python_dict[e], indent + 1)
+            )
         else:
-            if type(python_dict[e]) == str:
+            if isinstance(python_dict[e], str):
                 value = f'"{python_dict[e]}"'
-            elif type(python_dict[e]) == list:
+            elif isinstance(python_dict[e], list):
                 value = "\n"
                 for i in python_dict[e]:
-                    if type(i) == str:
-                        v = f'"{i}"'
-                    else:
-                        v = f"{i}"
-                    value += "  "*(indent+1) + "- " + v + "\n"
+                    v = f'"{i}"' if isinstance(i, str) else f"{i}"
+                    value += "  " * (indent + 1) + "- " + v + "\n"
             else:
-                value = python_dict[e]            
+                value = python_dict[e]
             yaml += ident + e + ":" + space + str(value) + "\n"
 
     return yaml
