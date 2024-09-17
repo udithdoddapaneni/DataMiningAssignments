@@ -1,5 +1,6 @@
 # GiG
 
+from copy import deepcopy
 from typing import Any
 
 import duckdb
@@ -58,8 +59,6 @@ def top_10_state_pandas(fec_df: pd.DataFrame, candidate: str) -> pd.Series:
 
 
 def discretization_pandas(fec_df: pd.DataFrame) -> pd.DataFrame:
-    from copy import deepcopy
-
     fec_df = deepcopy(fec_df)
     fec_df["bins"] = pd.cut(
         fec_df["contb_receipt_amt"], bins=[0, 1, 10, 100, 1000, 10000, 100000, 1000000, 10000000]
