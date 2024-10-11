@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classifier Reports</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+    th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+    }
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+    h1 {
+        text-align: center;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Classifier Report</h1>
+
+    
+        <div class="classifier-section">
+            <h2>Classifier: DT</h2>
+            
+            
+            <h3>Performance Metrics</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Precision</th>
+                        <th>Recall</th>
+                        <th>F1-score</th>
+                        <th>Support</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th colspan="5">Per-Class Metrics</th>
+                    </tr>            
+                    
+                        
+                            <tr>
+                                <td>0.0</td>
+                                <td>0.78</td>
+                                <td>0.70</td>
+                                <td>0.74</td>
+                                <td>4972.0</td>
+                            </tr>
+                        
+                    
+                        
+                            <tr>
+                                <td>1.0</td>
+                                <td>0.73</td>
+                                <td>0.81</td>
+                                <td>0.77</td>
+                                <td>5028.0</td>
+                            </tr>
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                       
+                    
+                    <tr>
+                        <th colspan="5">Averages</th>
+                    </tr>
+                    
+                        <tr>
+                            <td>macro avg</td>
+                            <td>0.75</td>
+                            <td>0.75</td>
+                            <td>0.75</td>
+                            <td>10000.0</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>weighted avg</td>
+                            <td>0.75</td>
+                            <td>0.75</td>
+                            <td>0.75</td>
+                            <td>10000.0</td>
+                        </tr>
+                    
+                    <tr>
+                        <td>accuracy</td>
+                        <td colspan="3">0.75</td>
+                        <td>10000.0</td>
+                    </tr>            
+                </tbody>
+            
+            </table>
+            
+
+            
+
+            <h3>Performance Charts</h3>
+            <div style="height: 300px">
+                <canvas id="myChart-DT"></canvas>
+              </div>
+              
+
+              
+              <script>
+                const ctx_DT = document.getElementById('myChart-DT');
+              
+                new Chart(ctx_DT, {
+                  type: 'scatter',
+                  data: {
+                    datasets: [{
+                      label: 'ROC Curve',
+                      data: [{"x": 0.0, "y": 0.0}, {"x": 0.3041029766693483, "y": 0.8058870326173428}, {"x": 1.0, "y": 1.0}],
+                      borderWidth: 1,
+                      showLine: true
+                    }]
+                  },
+
+                });
+              </script>
+              
+            
+        </div>
+    
+        <div class="classifier-section">
+            <h2>Classifier: KNN</h2>
+            
+            
+            <h3>Performance Metrics</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Precision</th>
+                        <th>Recall</th>
+                        <th>F1-score</th>
+                        <th>Support</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th colspan="5">Per-Class Metrics</th>
+                    </tr>            
+                    
+                        
+                            <tr>
+                                <td>0.0</td>
+                                <td>0.94</td>
+                                <td>0.94</td>
+                                <td>0.94</td>
+                                <td>4972.0</td>
+                            </tr>
+                        
+                    
+                        
+                            <tr>
+                                <td>1.0</td>
+                                <td>0.94</td>
+                                <td>0.95</td>
+                                <td>0.94</td>
+                                <td>5028.0</td>
+                            </tr>
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                       
+                    
+                    <tr>
+                        <th colspan="5">Averages</th>
+                    </tr>
+                    
+                        <tr>
+                            <td>macro avg</td>
+                            <td>0.94</td>
+                            <td>0.94</td>
+                            <td>0.94</td>
+                            <td>10000.0</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>weighted avg</td>
+                            <td>0.94</td>
+                            <td>0.94</td>
+                            <td>0.94</td>
+                            <td>10000.0</td>
+                        </tr>
+                    
+                    <tr>
+                        <td>accuracy</td>
+                        <td colspan="3">0.94</td>
+                        <td>10000.0</td>
+                    </tr>            
+                </tbody>
+            
+            </table>
+            
+
+            
+
+            <h3>Performance Charts</h3>
+            <div style="height: 300px">
+                <canvas id="myChart-KNN"></canvas>
+              </div>
+              
+
+              
+              <script>
+                const ctx_KNN = document.getElementById('myChart-KNN');
+              
+                new Chart(ctx_KNN, {
+                  type: 'scatter',
+                  data: {
+                    datasets: [{
+                      label: 'ROC Curve',
+                      data: [{"x": 0.0, "y": 0.0}, {"x": 0.06355591311343524, "y": 0.9455051710421639}, {"x": 1.0, "y": 1.0}],
+                      borderWidth: 1,
+                      showLine: true
+                    }]
+                  },
+
+                });
+              </script>
+              
+            
+        </div>
+    
+        <div class="classifier-section">
+            <h2>Classifier: NB</h2>
+            
+            
+            <h3>Performance Metrics</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Precision</th>
+                        <th>Recall</th>
+                        <th>F1-score</th>
+                        <th>Support</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th colspan="5">Per-Class Metrics</th>
+                    </tr>            
+                    
+                        
+                            <tr>
+                                <td>0.0</td>
+                                <td>0.86</td>
+                                <td>0.87</td>
+                                <td>0.86</td>
+                                <td>4972.0</td>
+                            </tr>
+                        
+                    
+                        
+                            <tr>
+                                <td>1.0</td>
+                                <td>0.87</td>
+                                <td>0.86</td>
+                                <td>0.86</td>
+                                <td>5028.0</td>
+                            </tr>
+                        
+                    
+                        
+                    
+                        
+                    
+                        
+                       
+                    
+                    <tr>
+                        <th colspan="5">Averages</th>
+                    </tr>
+                    
+                        <tr>
+                            <td>macro avg</td>
+                            <td>0.86</td>
+                            <td>0.86</td>
+                            <td>0.86</td>
+                            <td>10000.0</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>weighted avg</td>
+                            <td>0.86</td>
+                            <td>0.86</td>
+                            <td>0.86</td>
+                            <td>10000.0</td>
+                        </tr>
+                    
+                    <tr>
+                        <td>accuracy</td>
+                        <td colspan="3">0.86</td>
+                        <td>10000.0</td>
+                    </tr>            
+                </tbody>
+            
+            </table>
+            
+
+            
+
+            <h3>Performance Charts</h3>
+            <div style="height: 300px">
+                <canvas id="myChart-NB"></canvas>
+              </div>
+              
+
+              
+              <script>
+                const ctx_NB = document.getElementById('myChart-NB');
+              
+                new Chart(ctx_NB, {
+                  type: 'scatter',
+                  data: {
+                    datasets: [{
+                      label: 'ROC Curve',
+                      data: [{"x": 0.0, "y": 0.0}, {"x": 0.13475462590506837, "y": 0.8621718377088305}, {"x": 1.0, "y": 1.0}],
+                      borderWidth: 1,
+                      showLine: true
+                    }]
+                  },
+
+                });
+              </script>
+              
+            
+        </div>
+    
+</body>
+</html>

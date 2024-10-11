@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classifier Reports</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+    th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+    }
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+    h1 {
+        text-align: center;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Classifier Report</h1>
+    <script>
+        let DATA = [];
+    </script>
+    {% for classifier in classifiers %}
+        <div class="classifier-section">
+            <h2>Classifier: {{ classifier.classifier_name }}</h2>
+            
+            {% block metrics_table scoped%}
+            <h3>Performance Metrics</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Precision</th>
+                        <th>Recall</th>
+                        <th>F1-score</th>
+                        <th>Support</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th colspan="5">Per-Class Metrics</th>
+                    </tr>
+                    {% for label in classifier["classification_report"] %}
+                        <tr>
+                            {% if label != 'accuracy' and label != 'macro avg' and label != 'weighted avg' %}
+                                <td>{{ label }}</td>
+                                <td>{{ "%.2f" | format(classifier["classification_report"][label]["precision"]) }}</td>
+                                <td>{{ "%.2f" | format(classifier["classification_report"][label]["recall"]) }}</td>
+                                <td>{{ "%.2f" | format(classifier["classification_report"][label]["f1-score"]) }}</td>
+                                <td>{{ classifier["classification_report"][label]["support"] }}</td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                    <th colspan="5">Averages</th>
+                    <tr>
+                        <td> macro avg </td>
+                        <td> {{ "%.2f" | format(classifier["classification_report"]["macro avg"]["precision"]) }} </td>
+                        <td> {{ "%.2f" | format(classifier["classification_report"]["macro avg"]["recall"]) }} </td>
+                        <td> {{ "%.2f" | format(classifier["classification_report"]["macro avg"]["f1-score"]) }} </td>
+                        <td> {{ classifier["classification_report"]["macro avg"]["support"] }} </td>
+                    </tr>
+                    <tr>
+                        <td> weighted avg </td>
+                        <td> {{ "%.2f" | format(classifier["classification_report"]["weighted avg"]["precision"]) }} </td>
+                        <td> {{ "%.2f" | format(classifier["classification_report"]["weighted avg"]["recall"]) }} </td>
+                        <td> {{ "%.2f" | format(classifier["classification_report"]["weighted avg"]["f1-score"]) }} </td>
+                        <td> {{ classifier["classification_report"]["weighted avg"]["support"] }} </td>
+                    </tr>
+                    <tr>
+                        <td> accuracy </td>
+                        <td colspan="3"> {{ "%.2f" | format(classifier["classification_report"]["accuracy"]["accuracy"]) }} </td>
+                        <td> {{ classifier["classification_report"]["accuracy"]["support"] }} </td>
+                    </tr>
+                </tbody>
+            </table>
+            {% endblock %}
+
+            {% block metrics_chart scoped%}
+
+                <h3>Performance Charts</h3>
+                <div style="height: 300px">
+                    <canvas id="{{ classifier.classifier_name }}"></canvas>
+                </div>
+                <script>
+                    DATA = [];
+                    {% for d in classifier["fpr_tpr"] %}
+                        DATA.push({"x" : {{d["x"]}}, "y": {{d["y"]}} });
+                    {% endfor %}
+                    console.log(DATA);
+                    new Chart(document.getElementById("{{ classifier.classifier_name }}"), {
+                    type: 'scatter',
+                    data: {
+                        datasets: [{
+                        label: 'ROC Curve',
+                        data: DATA,
+                        borderWidth: 1,
+                        showLine: true
+                        }]
+                    },
+
+                    });
+                </script>
+              
+            {% endblock metrics_chart%}
+        </div>
+    {% endfor %}
+</body>
+</html>
