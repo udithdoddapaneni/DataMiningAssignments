@@ -1,0 +1,28 @@
+[project]
+name = "ds5612-pa3"
+version = "0.1.0"
+description = "Add your description here"
+authors = [
+    { name = "udithdoddapaneni", email = "udithdoddapaneni@gmail.com" }
+]
+dependencies = [
+    "jupyterlab~=4.3.0",
+    "tensorflow~=2.18.0",
+    "witwidget~=1.8.1",
+    "responsibleai~=0.36.0",
+    "matplotlib~=3.9.2",
+    "seaborn~=0.13.2",
+    "protobuf==3.20.3",
+    "aif360~=0.6.1",
+    "raiwidgets~=0.36.0",
+]
+readme = "README.md"
+requires-python = ">= 3.10"
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+[tool.rye]
+managed = true
+dev-dependencies = []
