@@ -1,0 +1,24 @@
+[project]
+name = "pa4"
+version = "0.1.0"
+description = "Add your description here"
+authors = [
+    { name = "udithdoddapaneni", email = "udithdoddapaneni@gmail.com" }
+]
+dependencies = [
+    "ipykernel~=6.29.5",
+    "mlxtend~=0.23.3",
+    "datagnosis~=0.0.3",
+    "scikit-learn==1.5",
+    "autogluon~=1.1.2b20241117",
+]
+readme = "README.md"
+requires-python = ">= 3.11"
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+[tool.rye]
+managed = true
+dev-dependencies = []
